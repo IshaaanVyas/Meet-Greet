@@ -12,6 +12,8 @@ public class NetworkManager : MonoBehaviour
 
     [SerializeField]
     private ModelManager m_ModelManager;
+    public Material head1;
+    public Material head2;
 
     /// <summary>
     /// websocket to WOZ 
@@ -57,12 +59,16 @@ public class NetworkManager : MonoBehaviour
                 int x = Int32.Parse(subs[5]);
                 int y = Int32.Parse(subs[6]);
                 int type = Int32.Parse(subs[8]);
-                m_ModelManager.SpawnObject(uuid, x, y, type, subs[13]);
+                //m_ModelManager.SpawnObject(uuid, x, y, type, subs[13]);
+                if (x == 1)
+                {
+                    head1.SetColor("_Color", Color.green);
+                }
             }
             else if (cmd == 2)
             {
                 string uuid = subs[4];
-                m_ModelManager.DeleteObject(uuid);
+                //m_ModelManager.DeleteObject(uuid);
             }
         };
         await websocketWOZ.Connect();
