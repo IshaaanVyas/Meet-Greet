@@ -5,6 +5,7 @@ using NativeWebSocket;
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public class NetworkManager : MonoBehaviour
@@ -14,6 +15,9 @@ public class NetworkManager : MonoBehaviour
     private ModelManager m_ModelManager;
     public Material head1;
     public Material head2;
+    Animator animator;
+    public GameObject person1;
+
 
     /// <summary>
     /// websocket to WOZ 
@@ -59,10 +63,15 @@ public class NetworkManager : MonoBehaviour
                 int x = Int32.Parse(subs[5]);
                 int y = Int32.Parse(subs[6]);
                 int type = Int32.Parse(subs[8]);
+                bool askingQ1 = animator.GetBool("askingQ1");
                 //m_ModelManager.SpawnObject(uuid, x, y, type, subs[13]);
                 if (x == 1)
                 {
                     head1.SetColor("_Color", Color.green);
+                }
+                if (y == 1)
+                {
+                    animator.SetBool("askingQ1", true);
                 }
             }
             else if (cmd == 2)
@@ -115,6 +124,7 @@ public class NetworkManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoginUser());
+        animator = person1.GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame

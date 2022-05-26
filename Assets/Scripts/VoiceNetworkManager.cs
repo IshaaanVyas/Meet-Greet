@@ -12,6 +12,7 @@ using TMPro;
 public class VoiceNetworkManager : MonoBehaviour
 {
 	public TMP_Text RecognitionResultTMP;
+	public Material head2;
 
 	private static VoiceNetworkManager _instance;
 
@@ -25,19 +26,21 @@ public class VoiceNetworkManager : MonoBehaviour
 	private string LastInstructionTagID = "";
 
 	private Hashtable HotwordsMap = new Hashtable() {
-			// 		{ "190", AudioSourceBlueBlock } , // "81" },
-        	// { "23" , AudioSourceDoubleYellowBlock }, // "38" },
-        	// { "187", AudioSourceBigBlock }, // "77" },
-        	// { "16", AudioSourceSingleYellowBlock }, // "44" },
-			// { "71", AudioSourceRedBlock }, // "11" },
-			// { "165", AudioSourceOrangeBlock } // "69" }
-		{ "pink block", "187" },
-		{ "blue block", "190" },
-		{ "double yellow", "23" },
-		{ "single yellow", "16" },
-		{ "red block", "71" },
-		{ "read block", "71" },	
-		{ "orange block", "165" }
+		// 		{ "190", AudioSourceBlueBlock } , // "81" },
+		// { "23" , AudioSourceDoubleYellowBlock }, // "38" },
+		// { "187", AudioSourceBigBlock }, // "77" },
+		// { "16", AudioSourceSingleYellowBlock }, // "44" },
+		// { "71", AudioSourceRedBlock }, // "11" },
+		// { "165", AudioSourceOrangeBlock } // "69" }
+		//{ "pink block", "187" },
+		//{ "blue block", "190" },
+		//{ "double yellow", "23" },
+		//{ "single yellow", "16" },
+		//{ "red block", "71" },
+		//{ "read block", "71" },	
+		//{ "orange block", "165" }
+		{"start", "369" },
+		{"end", "370" }
 	};
 
 	WebSocket websocket;
@@ -102,16 +105,24 @@ public class VoiceNetworkManager : MonoBehaviour
 					RecognitionResultTMP.text = result.partial;
 
 					//// Search for substring query. 
-					//foreach (DictionaryEntry hotwordpair in HotwordsMap) 
-					//{
-					//	if (result.partial.IndexOf((string)hotwordpair.Key, 0) >= 0) {
+					foreach (DictionaryEntry hotwordpair in HotwordsMap) 
+					{
+						if (result.partial.IndexOf((string)hotwordpair.Key, 0) >= 0) {
 					//		// Only trigger diff., 
-					//		if (!LastInstructionTagID.Equals((string)hotwordpair.Value)) {
-					//			InstructionQuad.VoiceTriggerInstruction(true, (string)hotwordpair.Value);
-					//			LastInstructionTagID = (string)hotwordpair.Value;
-					//		}
-					//	}
-					//}
+							if (!LastInstructionTagID.Equals((string)hotwordpair.Value)) {
+								if (hotwordpair.Value.Equals("369"))
+                                {
+									head2.SetColor("_Color", Color.green);
+								} else if (hotwordpair.Value.Equals("370"))
+                                {
+									head2.SetColor("_Color", Color.blue);
+                                }
+								//InstructionQuad.VoiceTriggerInstruction(true, (string)hotwordpair.Value);
+
+								LastInstructionTagID = (string)hotwordpair.Value;
+							}
+						}
+					}
 				}
 			}
 			// // Debug.Log("decoded == ");
