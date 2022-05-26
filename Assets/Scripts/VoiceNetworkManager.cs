@@ -13,6 +13,8 @@ public class VoiceNetworkManager : MonoBehaviour
 {
 	public TMP_Text RecognitionResultTMP;
 	public Material head2;
+	public GameObject testText;
+
 
 	private static VoiceNetworkManager _instance;
 
@@ -24,6 +26,7 @@ public class VoiceNetworkManager : MonoBehaviour
 	//public InstructionMappingPanel InstructionQuad;
 
 	private string LastInstructionTagID = "";
+	private bool vComm = false;
 
 	private Hashtable HotwordsMap = new Hashtable() {
 		// 		{ "190", AudioSourceBlueBlock } , // "81" },
@@ -40,7 +43,7 @@ public class VoiceNetworkManager : MonoBehaviour
 		//{ "read block", "71" },	
 		//{ "orange block", "165" }
 		{"start", "369" },
-		{"end", "370" }
+		{"and", "370" }
 	};
 
 	WebSocket websocket;
@@ -103,6 +106,7 @@ public class VoiceNetworkManager : MonoBehaviour
 				// Debug.Log("======= Got partial == " + result.partial);
 				if (result.partial != null && result.partial.Length > 0) {
 					RecognitionResultTMP.text = result.partial;
+					
 
 					//// Search for substring query. 
 					foreach (DictionaryEntry hotwordpair in HotwordsMap) 
@@ -113,15 +117,22 @@ public class VoiceNetworkManager : MonoBehaviour
 								if (hotwordpair.Value.Equals("369"))
                                 {
 									head2.SetColor("_Color", Color.green);
+									vComm = true;
 								} else if (hotwordpair.Value.Equals("370"))
                                 {
 									head2.SetColor("_Color", Color.blue);
+									vComm = false;
                                 }
 								//InstructionQuad.VoiceTriggerInstruction(true, (string)hotwordpair.Value);
 
 								LastInstructionTagID = (string)hotwordpair.Value;
 							}
 						}
+					}
+					if (vComm == true)
+					{
+						testText.GetComponentInChildren<TextMesh>().text = result.partial;
+
 					}
 				}
 			}
