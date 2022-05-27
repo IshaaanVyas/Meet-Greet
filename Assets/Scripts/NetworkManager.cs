@@ -15,6 +15,8 @@ public class NetworkManager : MonoBehaviour
     private ModelManager m_ModelManager;
     Animator animator;
     public GameObject person1;
+    public GameObject person2;
+    Animator animator2;
 
 
 
@@ -80,7 +82,15 @@ public class NetworkManager : MonoBehaviour
 
                 if (y == 1)
                 {
-                    
+                    animator2.SetBool("talking2", true);
+                }
+                if (y==2)
+                {
+                    animator2.SetBool("cheering", true);
+                }
+                if (y==3)
+                {
+                    animator2.SetBool("clapping", true);
                 }
             }
             else if (cmd == 2)
@@ -88,6 +98,7 @@ public class NetworkManager : MonoBehaviour
                 string uuid = subs[4];
                 //m_ModelManager.DeleteObject(uuid);
                 animator.SetBool("talking1", false);
+                animator2.SetBool("talking2", false);
             }
         };
         await websocketWOZ.Connect();
@@ -135,6 +146,7 @@ public class NetworkManager : MonoBehaviour
     {
         StartCoroutine(LoginUser());
         animator = person1.GetComponentInChildren<Animator>();
+        animator2 = person2.GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
