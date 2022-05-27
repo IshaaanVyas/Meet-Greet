@@ -16,7 +16,7 @@ public class VoiceNetworkManager : MonoBehaviour
 	public GameObject testText;
 	public ObjectManager m_ObjectManager;
 	private static int count = 0;
-	private Vector3 myVector = new Vector3(0.009f, 0.198f, -0.225f);
+	private Vector3 myVector = new Vector3(0.009f, 0.198f, 0.8f);
 
 	private static VoiceNetworkManager _instance;
 

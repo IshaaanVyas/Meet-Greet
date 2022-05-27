@@ -13,8 +13,6 @@ public class NetworkManager : MonoBehaviour
 
     [SerializeField]
     private ModelManager m_ModelManager;
-    public Material head1;
-    public Material head2;
     Animator animator;
     public GameObject person1;
 
@@ -68,17 +66,28 @@ public class NetworkManager : MonoBehaviour
                 //m_ModelManager.SpawnObject(uuid, x, y, type, subs[13]);
                 if (x == 1)
                 {
-                    head1.SetColor("_Color", Color.green);
+                    animator.SetBool("talking1", true);
                 }
-                if (y == 1)
+                if (x == 2)
                 {
                     animator.SetBool("askingQ1", true);
+                }       
+                if (x == 3)
+                {
+                    animator.SetBool("thumbsup1", true);
+                }
+
+
+                if (y == 1)
+                {
+                    
                 }
             }
             else if (cmd == 2)
             {
                 string uuid = subs[4];
                 //m_ModelManager.DeleteObject(uuid);
+                animator.SetBool("talking1", false);
             }
         };
         await websocketWOZ.Connect();
@@ -136,6 +145,10 @@ public class NetworkManager : MonoBehaviour
         {
             websocketWOZ.DispatchMessageQueue();
         }
+        //if (animator.GetBool("askingQ1"))
+        //{
+        //    animator.SetBool("askingQ1", false);
+        //}
         // #endif
     }
 
