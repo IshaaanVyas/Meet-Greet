@@ -14,7 +14,9 @@ public class VoiceNetworkManager : MonoBehaviour
 	public TMP_Text RecognitionResultTMP;
 	public Material head2;
 	public GameObject testText;
-
+	public ObjectManager m_ObjectManager;
+	private static int count = 0;
+	private Vector3 myVector = new Vector3(0.009f, 0.198f, -0.225f);
 
 	private static VoiceNetworkManager _instance;
 
@@ -27,6 +29,8 @@ public class VoiceNetworkManager : MonoBehaviour
 
 	private string LastInstructionTagID = "";
 	private bool vComm = false;
+	private bool typing = false;
+	private GameObject latestOne = null;
 
 	private Hashtable HotwordsMap = new Hashtable() {
 		// 		{ "190", AudioSourceBlueBlock } , // "81" },
@@ -114,15 +118,25 @@ public class VoiceNetworkManager : MonoBehaviour
 						if (result.partial.IndexOf((string)hotwordpair.Key, 0) >= 0) {
 					//		// Only trigger diff., 
 							if (!LastInstructionTagID.Equals((string)hotwordpair.Value)) {
-								if (hotwordpair.Value.Equals("369"))
+								if (hotwordpair.Value.Equals("369") && vComm == false)
                                 {
 									head2.SetColor("_Color", Color.green);
 									vComm = true;
-								} else if (hotwordpair.Value.Equals("370"))
+									typing = true;
+
+								} else if (hotwordpair.Value.Equals("370") && vComm == true)
                                 {
 									head2.SetColor("_Color", Color.blue);
 									vComm = false;
-                                }
+									//GameObject newText = Instantiate(testText, testText.transform.position, Quaternion.identity);
+									//m_ObjectManager.AddInteractiveObject(count.ToString(), newText);
+									//count++;
+									//if (count > 5)
+                                    //{
+									//	m_ObjectManager.DeleteAllObjects();
+                                    //}
+
+								}
 								//InstructionQuad.VoiceTriggerInstruction(true, (string)hotwordpair.Value);
 
 								LastInstructionTagID = (string)hotwordpair.Value;
@@ -132,6 +146,21 @@ public class VoiceNetworkManager : MonoBehaviour
 					if (vComm == true)
 					{
 						testText.GetComponentInChildren<TextMesh>().text = result.partial;
+						if (typing == true)
+						{
+							typing = false;
+							GameObject newText = Instantiate(testText, myVector, Quaternion.identity); //testText.transform.position
+							latestOne = newText;
+							m_ObjectManager.AddInteractiveObject(count.ToString(), newText);
+							count++;
+							if (count > 5)
+							{
+								m_ObjectManager.DeleteAllObjects();
+							}
+						} else
+                        {
+							latestOne.GetComponentInChildren<TextMesh>().text = result.partial;
+                        }
 
 					}
 				}
