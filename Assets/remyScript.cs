@@ -28,4 +28,9 @@ public class remyScript : MonoBehaviour
     {
         animator.SetBool("thumbsup1", false);
     }
+
+    void resetTalking()
+    {
+        animator.SetBool("talking1", false);
+    }
 }

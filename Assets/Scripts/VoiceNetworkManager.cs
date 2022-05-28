@@ -30,6 +30,7 @@ public class VoiceNetworkManager : MonoBehaviour
 	private string LastInstructionTagID = "";
 	private bool vComm = false;
 	private bool typing = false;
+	private bool recording = false;
 	private GameObject latestOne = null;
 
 	private Hashtable HotwordsMap = new Hashtable() {
@@ -122,12 +123,18 @@ public class VoiceNetworkManager : MonoBehaviour
                                 {
 									head2.SetColor("_Color", Color.green);
 									vComm = true;
-									typing = true;
+
+									if (typing == false)
+									{
+										typing = true;
+									}
+									recording = false;
 
 								} else if (hotwordpair.Value.Equals("370") && vComm == true)
                                 {
 									head2.SetColor("_Color", Color.blue);
 									vComm = false;
+									recording = false;
 									//GameObject newText = Instantiate(testText, testText.transform.position, Quaternion.identity);
 									//m_ObjectManager.AddInteractiveObject(count.ToString(), newText);
 									//count++;
@@ -146,9 +153,10 @@ public class VoiceNetworkManager : MonoBehaviour
 					if (vComm == true)
 					{
 						testText.GetComponentInChildren<TextMesh>().text = result.partial;
-						if (typing == true)
+						if (typing == true && recording == false)
 						{
 							typing = false;
+							recording = true;
 							GameObject newText = Instantiate(testText, myVector, Quaternion.identity); //testText.transform.position
 							latestOne = newText;
 							m_ObjectManager.AddInteractiveObject(count.ToString(), newText);

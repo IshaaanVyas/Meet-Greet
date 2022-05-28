@@ -26,4 +26,9 @@ public class person2Script : MonoBehaviour
     {
         animator.SetBool("cheering", false);
     }
+
+    void resetTalking()
+    {
+        animator.SetBool("talking2", false);
+    }
 }
